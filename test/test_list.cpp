@@ -5,7 +5,6 @@ TEST(List, can_create_list) {
 	ASSERT_NO_THROW(List<int> lst);
 }
 
-
 TEST(List, identical_lists_are_equal) {
 	List<int> lst1;
 	List<int> lst2;
@@ -60,7 +59,6 @@ TEST(List, can_equate_lists) {
 	EXPECT_EQ(lst2, lst1);
 }
 
-
 TEST(List, can_indexing_list) {
 	List<int> lst;
 	lst.push_front(4);
@@ -76,12 +74,10 @@ TEST(List, can_indexing_list_edit_value) {
 	ASSERT_TRUE(lst[1] == 10);
 }
 
-
-
 TEST(List, can_push_front_list) {
 	List<int> lst;
 	lst.push_front(4);
-	
+
 	ASSERT_NO_THROW(lst.push_front(4));
 }
 
@@ -118,42 +114,6 @@ TEST(List, can_use_size_list) {
 	ASSERT_EQ(lst.size(), 3);
 }
 
-
-
-TEST(List, cant_erase_list_with_large_index) {
-	List<int> lst;
-	lst.push_front(4);
-	lst.push_front(3);
-	lst.push_front(2);
-	lst.push_front(1);
-	ASSERT_ANY_THROW(lst.erase(6));
-}
-
-TEST(List, cant_erase_list_with_negative_index) {
-	List<int> lst;
-	lst.push_front(4);
-	lst.push_front(3);
-	lst.push_front(2);
-	lst.push_front(1);
-	ASSERT_ANY_THROW(lst.erase(-2));
-}
-
-TEST(List, correct_work_erase_list) {
-	List<int> lst1;
-	List<int> lst2;
-
-	lst1.push_front(4);
-	lst1.push_front(3);
-	lst1.push_front(2);
-	lst1.push_front(1);
-
-	lst2 = lst1;
-
-	lst1.erase(3);
-	ASSERT_FALSE(lst1 == lst2);
-}
-
-
 TEST(List, true_if_search_value_in_list) {
 	List<int> lst;
 	lst.push_front(4);
@@ -168,3 +128,23 @@ TEST(List, false_if_not_search_value_in_list) {
 	ASSERT_FALSE(lst.search(15));
 }
 
+TEST(List, correct_work_erase_list) {
+	List<int> lst;
+	lst.push_front(4);
+	lst.push_front(3);
+	lst.push_front(2);
+	lst.push_front(1);
+	lst.erase(lst.get_first()->next);
+	ASSERT_EQ(lst.search(2), 0);
+}
+
+TEST(List, correct_work_insert_list) {
+	List<int> lst;
+	lst.push_front(4);
+	lst.push_front(3);
+	lst.push_front(2);
+	lst.push_front(1);
+	lst.insert(6, lst.get_first()->next);
+	ASSERT_EQ(lst.search(6), 1);
+	ASSERT_EQ(lst[2], 6);
+}

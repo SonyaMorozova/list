@@ -6,13 +6,13 @@ private:
     struct Node {
         T data;
         Node* next;
-        Node(): data(T()), next(nullptr) {}
+        Node() : data(T()), next(nullptr) {}
         Node(T val, Node* nxt) {
             data = val;
             next = nxt;
         }
     };
-   Node* first;
+    Node* first;
 
 public:
     List() : first(nullptr) {}
@@ -49,7 +49,7 @@ public:
         if (this != &other) {
             clear();
             if (other.first == nullptr) {
-                first = nullptr; 
+                first = nullptr;
                 return *this;
             }
             first = new Node(other.first->data, nullptr);
@@ -83,13 +83,11 @@ public:
 
     T& operator[](size_t index) {
         Node* curr = first;
-        for (size_t i = 0; i < index && curr != nullptr; i++) {
-            curr = curr->next;
-        }
+        for (size_t i = 0; i < index && curr != nullptr; i++) curr = curr->next;
         if (curr == nullptr) throw "Incorrect index";
-        return curr->data; 
+        return curr->data;
     }
-   
+
     int size() {
         if (first == nullptr) return 0;
         else {
@@ -108,42 +106,44 @@ public:
         else return 0;
     }
 
-    void erase(int index) {
-        if (first == nullptr || index < 0) throw "Index is negative or list is empty";
-        if (index == 0) {
-            Node* tmp = first;
-            first = first->next;
-            delete tmp;
-        }
+    void insert(T data, Node* prev) {
+        if (!prev) return;
+        Node* node = new Node(data, prev->next);
+        prev->next = node;
+    }
+
+    Node* get_first() const {
+        return first;
+    }
+
+    void erase(Node* node) {
+        if (!node) return;
+        if (node == first) first = node->next;
         else {
             Node* curr = first;
-            for (int i = 0; i < index - 1; i++) {
-                if (curr->next == nullptr) throw "Index is incorrect";
-                curr = curr->next;
-            }
-            Node* tmp = curr->next;
-            curr->next = tmp->next;
-            delete tmp;
+            while (curr && curr->next != node) curr = curr->next;
+            if (curr) curr->next = node->next;
         }
+        delete node;
     }
 
     bool search(T val) const {
         Node* curr = first;
         while (curr != nullptr) {
             if (curr->data == val) {
-                return 1; 
+                return 1;
             }
             curr = curr->next;
         }
-        return 0; 
+        return 0;
     }
 
     bool operator==(const List& other) const {
         Node* curr1 = first;
         Node* curr2 = other.first;
-     while (curr1 != nullptr && curr2 != nullptr) {
+        while (curr1 != nullptr && curr2 != nullptr) {
             if (curr1->data != curr2->data) {
-                return false; 
+                return false;
             }
             curr1 = curr1->next;
             curr2 = curr2->next;
